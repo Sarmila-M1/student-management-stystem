@@ -9,6 +9,7 @@
 #define SEMESTER 8
 #define MAX 100
 #define COURSECOUNT 70
+#define PASSMARK 3.5
 void print_semesterwise_mark(char *register_number);
 void calculate_sgpa_cgpa(char *register_number);
 typedef struct student
@@ -60,3 +61,10 @@ void print_semesterwise_mark(char *register_number);
 void calculate_sgpa_cgpa(char *register_number);
 void arrange_year_department_name();
 void print_all_student();
+void  print_student_detail_index(int i);
+void less_than_three_five();
+void first_mark();
+void copy_file_to_stru();
+void copy_stru_to_file();
+void retrivefile(FILE *fp);
+void addfile(FILE *fp,int scou);
