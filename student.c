@@ -6,9 +6,123 @@ stu ** s=0;
 void dynamic_memory_allocate()
 {
        	stu* a=(stu *)malloc(sizeof(stu));
-	s=realloc(s,(sizeof(stu)*studentcount));
+	s=realloc(s,(sizeof(stu)*(studentcount+1)));
 	s[studentcount]=a;
 }
+
+void copy_file_to_stru()
+{
+        FILE* fp=fopen("studentfile","r");
+        if(fp!=0)
+	{
+		retrivefile(fp);
+	        fclose(fp);
+	}
+}
+void copy_stru_to_file()
+{
+        FILE* fp=fopen("studentfile","w+");
+        if(fp==0)
+        {printf("data entered not saved...\n");
+         return;
+        }
+        fprintf(fp,"%d\n",studentcount);
+        addfile(fp,studentcount);
+	fclose(fp);
+}
+void retrivefile(FILE *fp)
+{
+  int a;
+  char ch;
+  fscanf(fp,"%d ",&a);
+  studentcount=0;
+  for(int st=0;st<a;st++)
+  {
+	  dynamic_memory_allocate();
+	  studentcount++;
+  }
+  printf("%d",a);
+  for(int i=0;i<a;i++)
+  {
+  fscanf(fp,"%[^\n] ",s[i]->name);
+  fscanf(fp,"%[^\n] ",s[i]->fathers_name);
+  fscanf(fp,"%[^\n] ",s[i]->mothers_name);
+  fscanf(fp,"%ld",&(s[i]->phonenumber));
+  fscanf(fp," %[^\n]",s[i]->caste);
+  fscanf(fp," %s",s[i]->nationality);
+  fscanf(fp," %s %s %s",s[i]->religion,s[i]->community,s[i]->gender);
+  fscanf(fp," %[^\n]",s[i]->bloodgroup);
+  fscanf(fp," %s %s",s[i]->date_of_birth,s[i]->adharnumber);
+  fscanf(fp,"%d %s",&(s[i]->joind_year),s[i]->register_number);
+  fscanf(fp," %s%d",s[i]->course,&(s[i]->first_gradurate));
+  fscanf(fp," %[^\n]",s[i]->address);
+  fscanf(fp,"%d %s",&(s[i]->hosteler),s[i]->mail_id);
+  for(int ii=0;ii<SEMESTER;ii+=2)
+          fscanf(fp," %f%f",&(s[i]->sgpa[ii]),&(s[i]->sgpa[ii+1]));
+  fscanf(fp," %f%d",&(s[i]->cgpa),&(s[i]->semestercount));
+  for(int ii=0;ii<COURSECOUNT;ii+=2)
+          fscanf(fp," %s %s",s[i]->course_name[ii],s[i]->course_name[ii+1]);
+  for(int ii=0;ii<COURSECOUNT;ii++)
+          fscanf(fp,"%d",&(s[i]->course_point[ii]));
+  
+  for(int ii=0;ii<COURSECOUNT;ii++)
+          fscanf(fp,"%d",&(s[i]->course_grade[ii]));
+  for(int ii=0;ii<SEMESTER;ii++)
+          fscanf(fp,"%d",&(s[i]->course_semester_wisecount[ii]));
+  fscanf(fp,"%d%d%d",&(s[i]->coursecount),&(s[i]->lateral_entery),&(s[i]->diploma_marks));
+  for(int ii=0;ii<COURSECOUNT;ii++)
+          fscanf(fp,"%d",&(s[i]->arrearcount[ii]));
+  fscanf(fp," %d%d",&(s[i]->tenth_mark),&(s[i]->twelth_mark));
+  }
+}
+
+void addfile(FILE *fp,int scou)
+{
+  for(int i=0;i<scou;i++)
+  {
+  fprintf(fp,"%s\n",s[i]->name);
+  fprintf(fp,"%s\n",s[i]->fathers_name);
+  fprintf(fp,"%s\n",s[i]->mothers_name);
+  fprintf(fp,"%ld\n",s[i]->phonenumber);
+  fprintf(fp,"%s\n%s\n",s[i]->caste,s[i]->nationality);
+  fprintf(fp,"%s %s %s\n",s[i]->religion,s[i]->community,s[i]->gender);
+  fprintf(fp,"%s\n",s[i]->bloodgroup);
+  fprintf(fp,"%s %s\n",s[i]->date_of_birth,s[i]->adharnumber);
+  fprintf(fp,"%d %s\n",s[i]->joind_year,s[i]->register_number);
+  fprintf(fp,"%s %d\n",s[i]->course,s[i]->first_gradurate);
+  fprintf(fp,"%s\n",s[i]->address);
+  fprintf(fp,"%d %s\n",s[i]->hosteler,s[i]->mail_id);
+  
+  for(int ii=0;ii<SEMESTER;ii+=2)
+          fprintf(fp,"%f %f\n",s[i]->sgpa[ii],s[i]->sgpa[ii+1]);
+  fprintf(fp,"%f %d\n",s[i]->cgpa,s[i]->semestercount);
+  
+  for(int ii=0;ii<COURSECOUNT;ii+=2)
+          fprintf(fp,"%s %s\n",s[i]->course_name[ii],s[i]->course_name[ii+1]);
+  
+  for(int ii=0;ii<COURSECOUNT;ii++)
+          fprintf(fp,"%d ",s[i]->course_point[ii]);
+  fprintf(fp,"\n");
+
+  for(int ii=0;ii<COURSECOUNT;ii++)
+          fprintf(fp,"%d ",s[i]->course_grade[ii]);
+  fprintf(fp,"\n");
+  
+  for(int ii=0;ii<SEMESTER;ii++)
+          fprintf(fp,"%d ",s[i]->course_semester_wisecount[ii]);
+  fprintf(fp,"\n");
+  fprintf(fp,"%d %d %d \n",s[i]->coursecount,s[i]->lateral_entery,s[i]->diploma_marks);
+  
+  for(int ii=0;ii<COURSECOUNT;ii++)
+          fprintf(fp,"%d ",s[i]->arrearcount[ii]);
+  fprintf(fp,"\n");
+  fprintf(fp,"%d %d\n",s[i]->tenth_mark,s[i]->twelth_mark);
+  }
+}
+
+
+
+
 
 void create_record()
 {
@@ -174,12 +288,18 @@ void create_record()
 		printf("You entered an invalid choise...\n");
 	}
 	}
-	strcpy(s[studentcount]->register_number," ");
+	strcpy(s[studentcount]->register_number,"NO_ALLOCATE");
 	s[studentcount]->cgpa=0;
 	for(int i=0;i<SEMESTER;i++)
 		s[studentcount]->sgpa[i]=0;
 	for(int i=0;i<COURSECOUNT ;i++)
+	{
 		s[studentcount]->arrearcount[i]=0;
+	        s[studentcount]->course_name[i][0]='0';
+                s[studentcount]->course_name[i][1]='\0';
+                s[studentcount]->course_point[i]=0;
+                s[studentcount]->course_grade[i]=0;
+        }
 	s[studentcount]->semestercount=0;
 	if(s[studentcount]->lateral_entery==1)
 		 s[studentcount]->semestercount=2;
@@ -331,7 +451,7 @@ void print_studentdetail()
 		printf("---------------------------------------------------------------------------------------------------\n\n");
 		printf("Name            : %s\n",s[countarray[i]]->name);
 		printf("Department      : %s\n",s[(countarray[i])]->course);
-		if(strcmp(s[i]->register_number," "))
+		if(strcmp(s[i]->register_number,"NO_ALLOCATE"))
 		        printf("Register number : %s\n",s[(countarray[i])]->register_number);
 		else
 			printf("Register number : Not allocated\n");
@@ -343,6 +463,7 @@ void print_studentdetail()
 		printf("Blood group     : %s\n",s[(countarray[i])]->bloodgroup);
 		printf("Address         : %s\n",s[(countarray[i])]->address);
 		printf("Adhar number    : %s\n",s[(countarray[i])]->adharnumber);
+		printf("Nationality     : %s\n",s[(countarray[i])]->nationality);
 		printf("Caste           : %s\n",s[(countarray[i])]->caste);
 		printf("Religion        : %s\n",s[(countarray[i])]->religion);
 		printf("Community       : %s\n",s[(countarray[i])]->community);
@@ -732,7 +853,7 @@ void print_all_student()
                 printf("---------------------------------------------------------------------------------------------------\n\n");
                 printf("Name            : %s\n",s[i]->name);
                 printf("Department      : %s\n",s[i]->course);
-                if(strcmp(s[i]->register_number," "))
+                if(strcmp(s[i]->register_number,"NO_ALLOCATE"))
                         printf("Register number : %s\n",s[i]->register_number);
                 else
                         printf("Register number : Not allocated\n");
@@ -744,6 +865,7 @@ void print_all_student()
                 printf("Blood group     : %s\n",s[i]->bloodgroup);
                 printf("Address         : %s\n",s[i]->address);
                 printf("Adhar number    : %s\n",s[i]->adharnumber);
+		printf("Nationality     : %s\n",s[i]->nationality);
                 printf("Caste           : %s\n",s[i]->caste);
                 printf("Religion        : %s\n",s[i]->religion);
                 printf("Community       : %s\n",s[i]->community);
@@ -798,12 +920,110 @@ void print_all_student()
         }
 }
 
+void  print_student_detail_index(int i)
+{
+        printf("---------------------------------------------------------------------------------------------------\n\n");
+        printf("Name            : %s\n",s[i]->name);
+        printf("Department      : %s\n",s[i]->course);
+        if(strcmp(s[i]->register_number," "))
+                        printf("Register number : %s\n",s[i]->register_number);
+        else
+                        printf("Register number : Not allocated\n");
+        printf("Accademic year  : %d - %d\n",s[i]->joind_year,s[i]->joind_year+4);
+        printf("Father's Name   : %s\n",s[i]->fathers_name);
+        printf("Mother's Name   : %s\n",s[i]->mothers_name);
+        printf("Gender          : %s\n",s[i]->gender);
+        printf("Date of Birth   : %s\n",s[i]->date_of_birth);
+        printf("Blood group     : %s\n",s[i]->bloodgroup);
+        printf("Address         : %s\n",s[i]->address);
+        printf("Adhar number    : %s\n",s[i]->adharnumber);
+        printf("Caste           : %s\n",s[i]->caste);
+        printf("Religion        : %s\n",s[i]->religion);
+        printf("Community       : %s\n",s[i]->community);
+        printf("Phone Number    : %ld\n",s[i]->phonenumber);
+        printf("Mail Id         : %s\n",s[i]->mail_id);
+        printf("Hosteler        : ");
+        if(s[i]->hosteler)
+        {
+                        printf("Yes\n");
+        }
+        else
+        {
+                        printf("No\n");
+        }
+        printf("First graduate  : ");
+        if(s[i]->first_gradurate)
+        {
+                        printf("Yes\n");
+        }
+	else
+        {
+                        printf("No\n");
+        }
+        printf("Lateral entery : ");
+        if(s[i]->lateral_entery)
+        {
+                        printf("Yes\n");
+        }
+        else
+        {
+                        printf("No\n");
+        }
+        printf("10th Mark       : %d\n",s[i]->tenth_mark);
+        printf("12th Mark       : %d\n",s[i]->twelth_mark);
+        if(s[i]->lateral_entery==1)
+        printf("Diploma Marks   : %d\n",s[i]->diploma_marks);
+        if(((s[i]->semestercount>0)&&(s[i]->lateral_entery==0))||(s[i]->semestercount>2))
+        {
+                        printf("\nSemester Wise SGPA\n\n");
+        }
+        for(int j=0;j<s[i]->semestercount;j++)
+        {
+                        if((s[i]->lateral_entery==1)&&((j==0)||(j==1)))
+                                continue;
+
+                        printf("%d Semester      : %.1f\n",(j+1),s[i]->sgpa[j]);
+        }
+        printf("\n");
+        printf("CGPA            : %.1f\n\n",s[i]->cgpa);
+        print_semesterwise_mark(s[i]->register_number);
+        printf("---------------------------------------------------------------------------------------------------\n\n");
+}
+
+void less_than_three_five()
+{
+        for(int i=0;i<studentcount;i++)
+        {
+                if((s[i]->cgpa)<=PASSMARK)
+                        print_student_detail_index(i);
+        }
+}
+
+void first_mark()
+{
+        float firstmark=0;
+        for(int i=0;i<studentcount;i++)
+        {
+                if((s[i]->cgpa)>=firstmark)
+                {
+                        firstmark=(s[i]->cgpa);
+                }
+
+        }
+        for(int i=0;i<studentcount;i++)
+        {
+                if((s[i]->cgpa)==firstmark)
+                        print_student_detail_index(i);
+        }
+}
+
 int main()
 {
 	int num;
+	copy_file_to_stru();
         while(1)
 	{
-		printf("Press 1 : Create new student record\nPress 2 : Allocate register number for student\nPress 3 : Enter semester exam marks\nPress 4 : Enter arrear exam mark\nPress 5 : Print student details\nPress 6 : Print all the student details\nPress 7 : Arange the student in assending order wise\nPress 8 : Exit\n");
+		printf("Press 1 : Create new student record\nPress 2 : Allocate register number for student\nPress 3 : Enter semester exam marks\nPress 4 : Enter arrear exam mark\nPress 5 : Print student details\nPress 6 : Print all the student details\nPress 7 : Arange the student in assending order wise\nPress 8 : Print detail of highst student score\nPress 9 : Print student details who got less that 3.5 CGPA\nPress 10 :Exit\n");
 		scanf("%d",&num);
 		if(num==1)
 			create_record();
@@ -828,11 +1048,14 @@ int main()
 		else if(num==7)
 		      arrange_year_department_name();
 		else if(num==8)
+			first_mark();
+		else if(num==9)
+			less_than_three_five();
+	        else if(num==10)
 			break;
-
 		else
 			printf("You entered an invalid option....\n");
 			
 	}
+	copy_stru_to_file();
 }
-
