@@ -44,7 +44,7 @@ void retrivefile(FILE *fp)
   printf("%d",a);
   for(int i=0;i<a;i++)
   {
-  fscanf(fp,"%[^\n] ",s[i]->name);
+  fscanf(fp," %[^\n] ",s[i]->name);
   fscanf(fp,"%[^\n] ",s[i]->fathers_name);
   fscanf(fp,"%[^\n] ",s[i]->mothers_name);
   fscanf(fp,"%ld",&(s[i]->phonenumber));
@@ -80,7 +80,8 @@ void addfile(FILE *fp,int scou)
 {
   for(int i=0;i<scou;i++)
   {
-  fprintf(fp,"%s\n",s[i]->name);
+
+  fprintf(fp,"\n%s\n",s[i]->name);
   fprintf(fp,"%s\n",s[i]->fathers_name);
   fprintf(fp,"%s\n",s[i]->mothers_name);
   fprintf(fp,"%ld\n",s[i]->phonenumber);
